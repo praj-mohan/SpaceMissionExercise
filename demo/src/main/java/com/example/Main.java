@@ -1,6 +1,8 @@
 package com.example;
 
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import com.opencsv.*;
 
@@ -17,7 +19,8 @@ public class Main {
         spaceMission = csv.readAll();
         file.close();
         csv.close();
-        System.out.println(getMissionCountByCompany("EER"));
+        float test = getSuccessRate("Arianespace");
+        System.out.println(test);        
 
 
         }
@@ -42,7 +45,30 @@ public class Main {
     }
 
     public static float getSuccessRate(String companyName) {
-        return 0;
+        int success = 0;
+        int total = getMissionCountByCompany(companyName);
+        for (String[] missions : spaceMission) {
+            if (companyName.equals(missions[0]) && missions[8].equals("Success")) {
+                success++;
+            }
+
+        }
+        
+        float result = (float) success / (float) total;
+        result = result * 100;
+        BigDecimal rounder = new BigDecimal(Float.toString(result));
+        if (result == 0) {
+            rounder = rounder.setScale(1, RoundingMode.HALF_UP);
+        }
+        else {
+            rounder = rounder.setScale(2, RoundingMode.HALF_UP);
+
+        }
+        result = rounder.floatValue();        
+
+
+
+        return result;
 
     }
 
