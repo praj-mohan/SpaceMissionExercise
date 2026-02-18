@@ -23,7 +23,7 @@ public class Main {
         spaceMission.remove(0);
         //float test = getSuccessRate("Arianespace");
         //System.out.println(test);
-        System.out.println(getMissionsByDateRange("2020-12-29", "2021-07-17"));        
+        //System.out.println(getMissionsByYear(1969));        
 
 
         }
@@ -110,7 +110,16 @@ public class Main {
     }
 
     public static int getMissionsByYear(int year) {
-        return 0;
+        int result = 0;
+        for (String[] missions : spaceMission) {
+            LocalDate missionDate = LocalDate.parse(missions[2]);
+            if (year == missionDate.getYear()) {
+                result++;
+
+            }
+        }
+
+        return result;
 
     }
 
