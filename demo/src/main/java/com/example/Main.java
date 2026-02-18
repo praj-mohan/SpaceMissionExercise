@@ -3,6 +3,7 @@ package com.example;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.*;
 
 import com.opencsv.*;
 
@@ -19,8 +20,10 @@ public class Main {
         spaceMission = csv.readAll();
         file.close();
         csv.close();
-        float test = getSuccessRate("Arianespace");
-        System.out.println(test);        
+        spaceMission.remove(0);
+        //float test = getSuccessRate("Arianespace");
+        //System.out.println(test);
+        System.out.println(getMissionsByDateRange("2020-12-29", "2021-07-17"));        
 
 
         }
@@ -73,19 +76,30 @@ public class Main {
     }
 
     public static List<String> getMissionsByDateRange(String startDate, String endDate) {
-
-         List<String> test = new ArrayList<String>();
-
-         test.add("hi");
-
-         return test;
+         LocalDate start = LocalDate.parse(startDate);
+         LocalDate end = LocalDate.parse(endDate);
+         
+         List<String> result = new ArrayList<String>();
+        
+         for (String[] missions : spaceMission) {
+            //System.out.println(missions[2]);
+            LocalDate missionDate = LocalDate.parse(missions[2]);
+            if (missionDate.isAfter(start) && missionDate.isBefore(end)) {
+                result.add(missions[5]);
+            }
+         }
+         return result;
 
 
     }
 
-    public static int getTopCompaniesByMissionCount(int n) {
+    public static List<String> getTopCompaniesByMissionCount(int n) {
+       
+        List<String> test = new ArrayList<String>();
 
-        return 0;
+        test.add("hi");
+
+        return test;
 
     }
 
