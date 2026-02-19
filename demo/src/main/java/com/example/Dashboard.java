@@ -143,7 +143,7 @@ public class Dashboard {
 
         JPanel charts = new JPanel(new GridLayout(1, 3, 10, 0));
         charts.setOpaque(false);
-        charts.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        charts.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
         charts.add(chartButton("Missions by Company", "View bar chart of top companies by mission count", BLUE,   () -> openChartFrame("Missions by Company", new BarPanel(),  BLUE)));
         charts.add(chartButton("Status Breakdown",    "View donut chart of mission status breakdown",     PURPLE, () -> openChartFrame("Status Breakdown",    new DonutPanel(), PURPLE)));
@@ -437,7 +437,7 @@ public class Dashboard {
             public void mouseExited (MouseEvent e) { btn.setBackground(accent); }
         });
 
-        JPanel btnWrap = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JPanel btnWrap = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         btnWrap.setOpaque(false);
         btnWrap.add(btn);
 
