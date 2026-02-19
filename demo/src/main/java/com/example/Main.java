@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.*;
+import org.javatuples.Pair;
 
 import com.opencsv.*;
 
@@ -20,19 +21,13 @@ public class Main {
         spaceMission = csv.readAll();
         file.close();
         csv.close();
-        spaceMission.remove(0);
-        //float test = getSuccessRate("Arianespace");
-        //System.out.println(test);
-        //System.out.println(getMissionsByYear(1969));        
-
-
+        spaceMission.remove(0); 
+        System.out.println(getTopCompaniesByMissionCount(4));    
         }
         catch (Exception noFile) {
             System.out.println("File not found");
 
-        }
-        //System.out.println("Hello world!");
-        
+        }        
     }
 
     public static int getMissionCountByCompany(String companyName) {
@@ -81,6 +76,7 @@ public class Main {
          
          List<String> result = new ArrayList<String>();
         
+         
          for (String[] missions : spaceMission) {
             //System.out.println(missions[2]);
             LocalDate missionDate = LocalDate.parse(missions[2]);
@@ -93,13 +89,52 @@ public class Main {
 
     }
 
-    public static List<String> getTopCompaniesByMissionCount(int n) {
+    public static List<Pair<String, Integer>> getTopCompaniesByMissionCount(int n) {
        
-        List<String> test = new ArrayList<String>();
+        List<Pair<String, Integer>> result = new ArrayList<Pair<String, Integer>>();
 
-        test.add("hi");
+        PriorityQueue<Map.Entry<String, Integer>> topCompanies = new PriorityQueue<>(Map.Entry.comparingByValue(Comparator.naturalOrder()));
+        HashMap<String, Integer> presort = new HashMap<String, Integer>();
+        List<String[]> sortByCompanies = spaceMission;
 
-        return test;
+        Collections.sort(sortByCompanies, new Comparator<String[]>(){
+            public int compare(String[] s1, String[] s2) {
+                return s1[0].compareTo(s2[0]);
+            }
+        });
+
+        String currCompany = "";
+        int currcount = 0;
+
+        for (String[] missions:sortByCompanies) {
+            if (currCompany.equals("")) {
+                currCompany = missions[0];
+            }
+            if (currCompany.equals(missions[0])) {
+                currcount++;
+            }
+            else {
+                presort.put(currCompany, currcount);
+                currCompany = missions[0];
+                currcount = 1;
+            }
+        }
+        presort.put(currCompany, currcount);
+        for (Map.Entry<String, Integer> company : presort.entrySet()) {
+            topCompanies.add(company);
+            if (topCompanies.size() > n) {
+                topCompanies.poll();
+            }
+        }
+
+        while (topCompanies.size() > 0) {
+            Map.Entry<String, Integer> convTuple = topCompanies.poll();
+            Pair<String, Integer> compTuple = Pair.with(convTuple.getKey(), convTuple.getValue());
+            result.add(0, compTuple);
+        }
+
+
+        return result;
 
     }
 
@@ -124,7 +159,31 @@ public class Main {
     }
 
     public static String getMostUsedRocket() {
-        return "test";
+        
+        String result = "";
+        int highest = 0;
+
+        HashMap<String, Integer> rockets = new HashMap<String, Integer>();
+
+        for (String[] missions : spaceMission) {
+            if (rockets.containsKey(missions[4])) {
+                rockets.put(missions[4], rockets.get(missions[4]) + 1);
+                if (rockets.get(missions[4]) > highest) {
+                    result = missions[4];
+                    highest = rockets.get(missions[4]);
+                }
+            }
+            else {
+                rockets.put(missions[4], 1);
+                if (result.equals("")) {
+                    result = missions[4];
+                    highest = 1;
+                }
+            }
+        }
+
+
+        return result;
 
     }
 
