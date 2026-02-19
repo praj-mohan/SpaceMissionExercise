@@ -1,5 +1,7 @@
 This is a simple dashboard created using Java and Swing and can be viewed by running Main.java. 
 
+The dashboard should look something like this: https://imgur.com/a/IkCEGaV
+
 Swing was chosen as the prime GUI/visualization as it is already integrated in Java and though alternative frontend tools exist, Swing is perfect for a simple exercise such as this.
 
 The 3 key data visualizations chosen Missions by Company, Status Breakdown, and Launches by Year.
