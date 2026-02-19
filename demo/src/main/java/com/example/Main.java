@@ -6,6 +6,8 @@ import java.math.RoundingMode;
 import java.time.*;
 import org.javatuples.Pair;
 
+
+
 import com.opencsv.*;
 
 import java.util.*;
@@ -13,6 +15,7 @@ import java.util.*;
 public class Main {
     
     static List<String[]> spaceMission;
+    static String[] columnHeader;
 
     public static void main(String[] args) {
         try {
@@ -21,8 +24,9 @@ public class Main {
         spaceMission = csv.readAll();
         file.close();
         csv.close();
-        spaceMission.remove(0); 
-        System.out.println(getAverageMissionsPerYear(2020, 2022));
+        columnHeader = spaceMission.get(0);
+        spaceMission.remove(0);
+        Dashboard.show();
         }
         catch (Exception noFile) {
             System.out.println("File not found");
@@ -31,6 +35,9 @@ public class Main {
     }
 
     public static int getMissionCountByCompany(String companyName) {
+        if (companyName == null || companyName.isBlank()) {
+            return 0;
+        }
         int result = 0; 
         for (String[] missions : spaceMission) {
             if (companyName.equals(missions[0])) {
@@ -43,6 +50,9 @@ public class Main {
     }
 
     public static float getSuccessRate(String companyName) {
+        if (companyName == null || companyName.isBlank()) {
+            return 0;
+        }
         int success = 0;
         int total = getMissionCountByCompany(companyName);
         for (String[] missions : spaceMission) {
@@ -93,13 +103,14 @@ public class Main {
        
         if (n <= 0) {
             System.out.println("This is an invalid input");
+            return Collections.emptyList();
         }
 
         List<Pair<String, Integer>> result = new ArrayList<Pair<String, Integer>>();
 
         PriorityQueue<Map.Entry<String, Integer>> topCompanies = new PriorityQueue<>(Map.Entry.comparingByValue(Comparator.naturalOrder()));
         HashMap<String, Integer> presort = new HashMap<String, Integer>();
-        List<String[]> sortByCompanies = spaceMission;
+        List<String[]> sortByCompanies = new ArrayList<>(spaceMission);
 
         Collections.sort(sortByCompanies, new Comparator<String[]>(){
             public int compare(String[] s1, String[] s2) {
@@ -220,4 +231,9 @@ public class Main {
         return result;
 
     }
+
+
+
+
+
 }
