@@ -83,6 +83,11 @@ public class Main {
     public static List<String> getMissionsByDateRange(String startDate, String endDate) {
          LocalDate start = LocalDate.parse(startDate);
          LocalDate end = LocalDate.parse(endDate);
+
+         if (start.isAfter(end)) {
+            System.out.println("This is an invalid range");
+            return Collections.emptyList();
+        }
          
          List<String> result = new ArrayList<String>();
         
@@ -213,9 +218,15 @@ public class Main {
     }
 
     public static float getAverageMissionsPerYear(int startYear, int endYear) {
+        
+        if (startYear > endYear) {
+            System.out.println("This is an invalid range");
+            return -1;
+        }
 
         int range = (endYear - startYear) + 1;
         int total = 0;
+        
 
         for (int i = startYear; i <= endYear; i++) {
             total += getMissionsByYear(i);
