@@ -22,7 +22,7 @@ public class Main {
         file.close();
         csv.close();
         spaceMission.remove(0); 
-        System.out.println(getMissionStatusCount());
+        System.out.println(getAverageMissionsPerYear(2020, 2022));
         }
         catch (Exception noFile) {
             System.out.println("File not found");
@@ -203,8 +203,21 @@ public class Main {
 
     public static float getAverageMissionsPerYear(int startYear, int endYear) {
 
+        int range = (endYear - startYear) + 1;
+        int total = 0;
 
-        return 0;
+        for (int i = startYear; i <= endYear; i++) {
+            total += getMissionsByYear(i);
+        }
+
+        float result = (float) total / (float) range;
+        BigDecimal rounder = new BigDecimal(Float.toString(result));
+        rounder = rounder.setScale(2, RoundingMode.HALF_UP);
+
+        result = rounder.floatValue();        
+
+
+        return result;
 
     }
 }
