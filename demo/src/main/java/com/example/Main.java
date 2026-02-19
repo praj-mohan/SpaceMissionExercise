@@ -22,7 +22,7 @@ public class Main {
         file.close();
         csv.close();
         spaceMission.remove(0); 
-        System.out.println(getTopCompaniesByMissionCount(4));    
+        System.out.println(getMissionStatusCount());
         }
         catch (Exception noFile) {
             System.out.println("File not found");
@@ -91,6 +91,10 @@ public class Main {
 
     public static List<Pair<String, Integer>> getTopCompaniesByMissionCount(int n) {
        
+        if (n <= 0) {
+            System.out.println("This is an invalid input");
+        }
+
         List<Pair<String, Integer>> result = new ArrayList<Pair<String, Integer>>();
 
         PriorityQueue<Map.Entry<String, Integer>> topCompanies = new PriorityQueue<>(Map.Entry.comparingByValue(Comparator.naturalOrder()));
@@ -138,9 +142,19 @@ public class Main {
 
     }
 
-    public static HashMap<String, String> getMissionStatusCount() {
-
-        return new HashMap<String, String>();
+    public static HashMap<String, Integer> getMissionStatusCount() {
+        
+        HashMap<String, Integer> result = new HashMap<String, Integer>();
+         for (String[] missions : spaceMission) {
+            if (result.containsKey(missions[8])) {
+                result.put(missions[8], result.get(missions[8]) + 1);
+            }
+            else {
+                result.put(missions[8], 1);
+            }
+        }
+        
+        return result;
 
     }
 
@@ -188,6 +202,7 @@ public class Main {
     }
 
     public static float getAverageMissionsPerYear(int startYear, int endYear) {
+
 
         return 0;
 
